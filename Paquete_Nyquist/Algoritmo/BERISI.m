@@ -11,12 +11,14 @@ M     = 100;
 omega = 2*pi/60;           
 %snr = 15;                           %SNR in [dB]
 coeff = 10^(snr/20);                %SNR in linear
-offset = [0 0.1, 0.3, 0.5] ;   %Conjunto de offsets t/T
+offset = [0.05, 0.1, 0.2] ;   %Conjunto de offsets t/T
 %alpha=0.5;                          %Factor de Roll-Off 
 a=linspace(-N,-1,N);
 b=linspace(1,N,N);
 ab=[a b];
+cd('Pulsos')
 fh=str2func(str);
+cd('..')
 %% Computo BER
 
 cd('Pulsos') 
@@ -25,7 +27,8 @@ for c=1:length(offset)
     g0 = coeff * fh(offset(c) * T,alpha);
     gk=zeros(length(ab),1);
     for i=1:length(ab)
-        gk(i) = coeff * datasample([1 -1],1) * fh((offset(c) - ab(i)) * T,alpha);
+        #gk(i) = coeff * datasample([1 -1],1) * fh((offset(c) - ab(i)) * T,alpha);
+        gk(i) = coeff * randsample([1 -1],1) * fh((offset(c) - ab(i)) * T,alpha);
     end    
     suma=0;
     mult=1;
